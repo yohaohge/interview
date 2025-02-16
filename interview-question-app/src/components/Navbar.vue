@@ -33,6 +33,7 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  padding: 10px 0;
 }
 
 /* 导航栏容器样式 */
@@ -42,29 +43,31 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 0 20px;
 }
 
 /* logo 样式 */
 .navbar-logo {
-  font-size: 1.5em;
+  font-size: 1.8em;
   font-weight: bold;
+  color: #333;
 }
 
 .navbar-logo router-link {
-  color: #333;
+  color: inherit;
   text-decoration: none;
 }
 
 /* 导航链接样式 */
 .navbar-links {
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 
 .navbar-links router-link {
   color: #333;
   text-decoration: none;
+  font-size: 1.1em;
   transition: color 0.3s ease;
 }
 
@@ -80,19 +83,21 @@
 }
 
 .navbar-search input {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
+  font-size: 1em;
 }
 
 .navbar-search button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1em;
   transition: background-color 0.3s ease;
 }
 

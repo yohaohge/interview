@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="question-detail-container">
       <h1>{{ question.title }}</h1>
-      <p>{{ question.content }}</p>
+      <p class="question-content">{{ question.content }}</p>
     </div>
   </template>
   
@@ -25,5 +25,16 @@
   </script>
   
   <style scoped>
-  /* 问题详情样式 */
+  /* 问题详情容器样式 */
+  .question-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* 问题内容样式 */
+  .question-content {
+    font-size: 1.1em;
+    line-height: 1.6;
+  }
   </style>
