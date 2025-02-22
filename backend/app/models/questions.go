@@ -6,7 +6,7 @@ import (
 
 type Question struct {
 	ID             int       `gorm:"primaryKey" json:"id"`
-	Content        string    `json:"content"`
+	Title          string    `json:"title"`
 	Tags           string    `json:"tags"`
 	Analysis       string    `json:"analysis"`
 	RelatedCompany string    `json:"related_company"`

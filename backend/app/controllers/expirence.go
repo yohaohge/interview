@@ -1,3 +1,4 @@
+// app/controllers/expirence.go
 package controllers
 
 import (
@@ -43,5 +44,29 @@ func GetInterviewExperienceList(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, experiences)
+	c.JSON(http.StatusOK, gin.H{"experiences": experiences, "total": 100})
+}
+
+// GetInterviewExperienceDetail 获取单个面经详情
+func GetInterviewExperienceDetail(c *gin.Context) {
+	// 获取 URL 参数中的面经 ID
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid interview experience ID"})
+		return
+	}
+
+	var experience models.InterviewExperience
+	result := utils.DB.First(&experience, id)
+	if result.Error != nil {
+		if result.Error.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Interview experience not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, experience)
 }

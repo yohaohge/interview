@@ -1,3 +1,4 @@
+// app/controllers/question.go
 package controllers
 
 import (
@@ -22,7 +23,20 @@ func GetQuestionList(c *gin.Context) {
 	db := utils.DB
 
 	if keyword != "" {
-		db = db.Where("content LIKE ? OR tags LIKE ? OR related_company LIKE ?", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%")
+		db = db.Where("title LIKE ? OR tags LIKE ? OR related_company LIKE ?", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%")
+	}
+
+	// 计算总记录数
+	var totalCount int64
+	if err := db.Model(&models.Question{}).Count(&totalCount).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 计算总页数
+	totalPages := int(totalCount) / pageSize
+	if int(totalCount)%pageSize != 0 {
+		totalPages++
 	}
 
 	result := db.Offset(offset).Limit(pageSize).Find(&questions)
@@ -31,5 +45,29 @@ func GetQuestionList(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, questions)
+	c.JSON(http.StatusOK, gin.H{"questions": questions, "total": totalPages})
+}
+
+// GetQuestionDetail 获取单个问题的详情
+func GetQuestionDetail(c *gin.Context) {
+	// 获取 URL 参数中的问题 ID
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid question ID"})
+		return
+	}
+
+	var question models.Question
+	result := utils.DB.First(&question, id)
+	if result.Error != nil {
+		if result.Error.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Question not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, question)
 }
